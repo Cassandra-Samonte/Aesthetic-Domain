@@ -2,13 +2,13 @@ import { useState } from 'react'
 import Card from '../Card'
 import './styles.css'
 
-export default function Gallery({ artworks, refreshQueue, updateDetails }) {
+export default function Gallery({ artworks, refreshQueue, url, updateDetails }) {
     // Keep track of what gallery page the user is viewing
     const [currentPage, setCurrentPage] = useState(1)
 
     // Event handler for the next Page Button
-    function getNextPage() {
-        refreshQueue(`https://openaccess-api.clevelandart.org/api/artworks/?has_image=1&limit=20&skip=${artworks.length}`)
+    function getNextPage(event) {
+        refreshQueue(url, event.target.innerText)
         setCurrentPage(currentPage + 1)
     }
 

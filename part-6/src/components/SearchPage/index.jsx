@@ -1,13 +1,28 @@
 import { useState } from "react"
+import Gallery from "../Gallery"
 
-export default function SearchPage() {
+export default function SearchPage(props) {
     // Store search term and API data here
     const [query, setQuery] = useState('')
+    const [queryResults, setQueryResults] = useState([])
+
+    // Define an async function to query the API & JSONify the response
+    async function getData(url, buttonName) {
+        const res = await fetch(url)
+        const { data } = await res.json() // destructure the JSON response
+        // Determine if a new search is being made, if so, clear the previous data
+        if (buttonName === 'Next Page') {
+            setQueryResults([...queryResults, ...data])
+        } else {
+            setQueryResults(data)
+        }
+    }
 
     function handleQuerySubmit(event) {
         // prevent the page reloading
         event.preventDefault()
-        console.log(query)
+        // send a request to the API with the query string 
+        getData(`https://openaccess-api.clevelandart.org/api/artworks/?has_image=1&limit=40&q=${query}`, event.target.innerText)
     }
 
     return (
@@ -31,6 +46,13 @@ export default function SearchPage() {
                     Search
                 </button>
             </form>
+
+            <Gallery
+                artworks={queryResults}
+                refreshQueue={getData}
+                url={`https://openaccess-api.clevelandart.org/api/artworks/?has_image=1&limit=20&&q=${query}&skip=${queryResults.length}`}
+                updateDetails={props.setDetailsData}
+            />
         </div>
     )
 }

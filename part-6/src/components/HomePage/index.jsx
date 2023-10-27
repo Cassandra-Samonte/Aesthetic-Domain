@@ -9,6 +9,7 @@ export default function HomePage(props) {
                 artworks={props.artworks}
                 refreshQueue={props.getData}
                 updateDetails={props.setDetailsData}
+                url={`https://openaccess-api.clevelandart.org/api/artworks/?has_image=1&limit=20&skip=${props.artworks.length}`}
             />
         </>
     )
