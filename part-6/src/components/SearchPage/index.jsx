@@ -4,11 +4,15 @@ export default function SearchPage() {
     // Store search term and API data here
     const [query, setQuery] = useState('')
 
-    
+    function handleQuerySubmit(event) {
+        // prevent the page reloading
+        event.preventDefault()
+        console.log(query)
+    }
 
     return (
         <div className="search-page p-10">
-            <form className="mt-4 text-center">
+            <form onSubmit={handleQuerySubmit} className="mt-4 text-center">
                 <label htmlFor="search" className="block font-medium mb-1">
                     <h1 className="text-3xl font-bold">Search for Art</h1>
                 </label>
@@ -18,7 +22,7 @@ export default function SearchPage() {
                     name="search"
                     placeholder="beautiful landscape..."
                     value={query}
-                    onChange={}
+                    onChange={(event) => setQuery(event.target.value)}
                 />
                 <button
                     type="submit"
